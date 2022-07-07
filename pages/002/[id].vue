@@ -39,6 +39,7 @@
 	}
 
 	const loadDetail1 = async () => {
+		// 取得使用者群組列表
 		let url1 = window.sessionStorage.getItem('liwaAPIsvr') + "/002_haveGroup.php?siteID="+window.sessionStorage.getItem('liwaSiteID')
 		const detail1 = await useFetch(url1, {method: 'GET'}, {refetch: true}).get().json()
 		let arrDetail1 = detail1.data.value.arrSQL
@@ -51,7 +52,6 @@
 			}
 			arrTmp.push(objItem)
 		}
-		console.log('arrTmp =', arrTmp)
 		liwaDetail1.value = arrTmp
 	}
 
@@ -76,19 +76,6 @@
 	const jumpAdd = () => {
 		window.location.href = '/002/add'
 	}
-
-	// const setImage = computed(() => {
-	// 	let sGender = liwaData.value.gender
-	// 	let sIconPathTmp = liwaData.value.iconPath
-	// 	let sIconPath = ''
-	// 	if (sIconPathTmp.substr(0, 5) !== 'data:') {
-	// 		sIconPath = (liwaData.value.gender == '先生') ? 'static/man-icon.png' : 'static/woman-icon.png'
-	// 	} else {
-	// 		sIconPath = sIconPathTmp
-	// 	}
-	// 	console.log('iconPath = ', sIconPath)
-	// 	return sIconPath
-	// })
 
 	const clearData = () => {
 		let tmpData = {
@@ -125,10 +112,9 @@
 	}
 
 	const saveData = async () => {
-
 		let datastr = JSON.stringify(liwaData.value)
+	// console.log('datastr =', datastr)
 	    const useMyFetch = createFetch({
-	      // baseUrl: 'http://localhost:8102',
 	      baseUrl: window.sessionStorage.getItem('liwaAPIsvr'),
 	      fetchOptions: {
 	        mode: 'cors',
@@ -177,10 +163,15 @@
 		isConfig.value = false
 	}
 
-	const setUGroup = () => {
-		// 設定使用者群組的選項
-		
-	}
+	const iconSrc = computed(() => {
+		let iconHead = liwaData.value.iconPath.substr(0, 5)
+		let AA = liwaData.value.iconPath
+		if (iconHead !== 'data:') {
+			AA = (liwaData.value.gender == '先生') ? window.sessionStorage.getItem('liwaImgsvr') + '/syspics/man-icon.png': window.sessionStorage.getItem('liwaImgsvr') + '/syspics/woman-icon.png'
+			liwaData.value.iconPath = AA
+		}
+		return AA
+	})
 
 	// 訊息對話盒及設定對話盒相關 ends
 
@@ -253,7 +244,7 @@
 				<div class="w-full h-[200px]">
 					<img 
 					class="mx-auto border-2 w-[200px] h-full"
-					:src="liwaData.iconPath" 
+					:src="iconSrc" 
 					width="200" 
 					:alt="liwaData.username" 
 					@click="callDialog"

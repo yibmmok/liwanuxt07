@@ -99,7 +99,7 @@
 			<div class="w-[60px] float-left ring-1 ring-white rounded-sm bg-white mr-2 mt-1">
 				<a :href="goLink()">
 					<img :src="siteIcon" alt="logo of liwasite" class="mx-auto" width="50"/>
-				</a>				
+				</a>
 			</div>
 			<div class="float-left">
 				<h1 class="text-4xl text-white pt-2">{{ siteName }}雲系統</h1>

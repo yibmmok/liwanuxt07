@@ -6,16 +6,19 @@
 	**********************************************************/
 	import { ref, onMounted } from "vue"
 	import { createInput } from "@formkit/vue"
-	import OneTimePass from "../components/OneTimePass"
-	// import { useShowmode } from "../composables/use-showmode"
-	// import jwtDecode from "jwt-decode"
-	// import { useFetch, createFetch } from "@vueuse/core"
+	import CurrencyInput from "../components/CurrencyInput"
+	import liwaCombo from "../components/liwaCombo"
 
 	const btnTest2 = ref(null)
 
 	const values = ref({})
-	const otp = createInput(OneTimePass)
+	
+	const sVal1 = ref('A03')
+	const arrOption = ref([{value:'A01'}, {value:'A02'}, {value:'A03'}, {value:'A04'}])
 
+	const returnChange = (sItem) => {
+		console.log('sItem =', sItem)
+	}
 
 	definePageMeta({
 	  title: 'LiwaSite 測試頁',
@@ -33,17 +36,29 @@
 			>測試</div>
 		<div class="w-12 h-8 bg-purple-200 invisible" @click="" ref="btnTest2">btnTest2</div>	
 	</div>
-	<FormKit type="form" v-model="values">
+
+	<FormKit 
+		type="form"
+		form-class="ml-4 relative w-72"	
+		v-model="values" 
+	>
 		<FormKit
-			:type="otp"
-			form-class="p-2 bg-yellow-200"
-			label="一次性密碼"
-			name="two_factor_code"
-			help="密碼已發送到您的手機"
-			validation="required"
-			validation-visibility="live"
+			type="liwaDrop"
+			inner-class="border-0 rounded-none"
+			outer-class="border-b-2 border-b-slate-500"
+			label="下拉選單"
+			name="Dropdown"
+			help="下拉選單測試"
+			:sVal="sVal1"
+			:arrOption="arrOption"
 		/>
 	</FormKit>
+
+	<liwaCombo class="w-24 h-8 ml-4 my-8"
+		
+		@returnChange="returnChange"
+	/>
+	<hr />
 	<pre wrap>{{ values }}</pre>
 </template>
 
