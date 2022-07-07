@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	/*********************************************************
-	prog name: 使用者列表, author: James Lin, date: 2020/04/19
+	prog name: 公告列表, author: James Lin, date: 2020/04/19
 
 	**********************************************************/
 	import type { Ref } from "vue"
@@ -12,10 +12,9 @@
 	import liwaMsg from "../../components/liwaMsg.vue"
 
 	const error = ref('')
-	// const liwaData = ref({}) as Ref<User[]>
 	const liwaData = ref({})
-	const progName = ref('使用者列表')
-	const proglink = ref('/002')
+	const progName = ref('公告列表')
+	const proglink = ref('/005')
 	const detailFlg = ref(false)
 	const detailKey = ref('')
 	const isFilter = ref(false)
@@ -50,7 +49,7 @@
 
 	const fetchData = async () => {
 		let APIsvr = window.sessionStorage.getItem('liwaAPIsvr')
-		let url = `${APIsvr}/002_havelist.php?filterName=${filters.value.username}&filterEmail=${filters.value.usermail}&filterRole=${filters.value.role}&filterOnboard1=${filters.value.onboard1}&filterOnboard2=${filters.value.onboard2}&orderCol=${orderCol.value}&sortDir=${sortDir.value}&page=${page.value}&pageSize=${pageSize.value}`
+		let url = `${APIsvr}/005_havelist.php?filterName=${filters.value.username}&filterEmail=${filters.value.usermail}&filterRole=${filters.value.role}&filterOnboard1=${filters.value.onboard1}&filterOnboard2=${filters.value.onboard2}&orderCol=${orderCol.value}&sortDir=${sortDir.value}&page=${page.value}&pageSize=${pageSize.value}`
 		const data = await useFetch(url, {method: 'GET'}, {refetch: true}).get().json()
 		liwaData.value = data.data.value.arrSQL
 		totalPage.value = data.data.value.totalPage
@@ -180,9 +179,9 @@
 	        body: datastr
 	      }
 	    })
-	    const { data } = await useMyFetch('002_edit3.php').post().json()
+	    const { data } = await useMyFetch('005_edit3.php').post().json()
 	    if (!data.value.message) {
-	    	// window.location.href = '/002/'
+	    	// window.location.href = '/005/'
 	    } else {
 	    	showMsg('', data.value.message, 1)
 	    }	
@@ -192,11 +191,11 @@
 	const saveFilters = () => {
 		// 將過濾條件存在storage內
 		let datastr = JSON.stringify(filters.value)
-		window.sessionStorage.setItem('liwafilter_002', datastr)
+		window.sessionStorage.setItem('liwafilter_005', datastr)
 	}
 
 	const refetchFilters = () => {
-		let tmpFilters = window.sessionStorage.getItem('liwafilter_002')
+		let tmpFilters = window.sessionStorage.getItem('liwafilter_005')
 		if ((tmpFilters == "") || (tmpFilters == null)) {
 			// sessionStorage內的liwafilters有值
 			filters.value.username = ''
@@ -209,7 +208,7 @@
 			filters.value.page = page.value
 			filters.value.pageSize = pageSize.value
 			let datastr = JSON.stringify(filters.value)
-			window.sessionStorage.setItem('liwafilter_002', datastr)
+			window.sessionStorage.setItem('liwafilter_005', datastr)
 		} else {
 			let arrFilters = JSON.parse(tmpFilters)
 			filters.value = arrFilters
@@ -237,7 +236,7 @@
 
 	onMounted(() => {
     	let compName = window.sessionStorage.getItem('liwaSiteName')
-    	const title = useTitle(compName+`- 使用者列表`)
+    	const title = useTitle(compName+`- 公告列表`)
 		// 先設定filter條件
 		refetchFilters()
 		fetchData()
@@ -249,7 +248,7 @@
 	// })
 
 	definePageMeta({
-	  title: 'LiwaSite 使用者管理',
+	  title: 'LiwaSite 公告管理',
 	  layout: "default",
 	})	
 </script>
@@ -408,7 +407,7 @@
     <div class="flex justify-center w-full h-screen bg-transparent items-start antialiased">
       	<div class="h-full lg:h-[calc(100%_-_28rem)] flex flex-col mt-4 w-11/12 sm:w-5/6 lg:w-1/2 max-w-lg mx-auto rounded-lg border border-gray-300 shadow-xl">
         	<div class="relative flex flex-row justify-between px-6 py-2 bg-white border-b border-gray-200 rounded-tl-lg rounded-tr-lg text-center ">
-        		<div class="w-5/7 h-8 text-2xl text-center">使用者查詢</div>
+        		<div class="w-5/7 h-8 text-2xl text-center">公告查詢</div>
         		<div class="w-2/7 h-8 flex flex-row justify-between">
 		            <div class="w-8 h-8 top-2 right-2 bg-white cursor-pointer" @click.prevent="toggleFilter()">
 			            <svg
@@ -437,7 +436,7 @@
 			          name="username"
 			          label="姓名"
 			          type="text"
-			          placeholder="輸入使用者姓名"
+			          placeholder="輸入公告姓名"
 			          help="可輸入部份文字"
 			        />
 			        <FormKit

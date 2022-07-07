@@ -1,5 +1,7 @@
 import { zh } from '@formkit/i18n'
-import { DefaultConfigOptions } from '@formkit/vue'
+import { DefaultConfigOptions, createInput } from '@formkit/vue'
+import liwaDrop from "./components/liwaDrop"
+import { applicationIcons, ethereum } from '@formkit/icons'
 
 const config: DefaultConfigOptions = {
 	locales: { zh },
@@ -12,6 +14,15 @@ const config: DefaultConfigOptions = {
 				}
 			}
 		}
+	},
+	inputs: {
+		liwaDrop: createInput(liwaDrop, {
+			props: ['sVal', 'arrOption'],
+		}),
+	},	
+	icons: {
+		...applicationIcons, // spread an entire group of icons
+		ethereum, // or add single icons
 	}
 }
 
