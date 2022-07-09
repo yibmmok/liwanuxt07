@@ -20,7 +20,7 @@
 	const isFilter = ref(false)
 	const filters = ref({})
 	const mainID = ref('')
-	const orderCol = ref('username')
+	const orderCol = ref('shortItems')
 	const sortDir = ref('asc')
 	const arrChklist = ref([])
 	const isChkAllMode = ref(-1)

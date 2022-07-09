@@ -2,6 +2,9 @@
 import { ref } from "vue"
 import TinyMceEditor from "@tinymce/tinymce-vue"
 
+	const sContent = ref('')
+	const liwaEditor = ref(null)
+
 	const imgInput = ref(null)
 	const InitVal = ref({
 		height: 500,
@@ -38,11 +41,14 @@ import TinyMceEditor from "@tinymce/tinymce-vue"
 
 <template>
 <h1 class="text-red-500 text-3xl p-4">Index Page</h1>
+<button class="w-48 h-12 bg-yellow-200">測試</button>
 <div>
 	<TinyMceEditor api-key="fkoaqldrjeuygn6wbe51uchydhzrhufgs8a9tt6yehn106uo" 
 	:init="InitVal"
+	ref="liwaEditor"
 	@change="handleOnChange"/>
 </div>
+<div class="w-full h-[300px]">{{ sContent }}</div>
 <div class="invisible">
 	<input 
 		id="imgInput" 
