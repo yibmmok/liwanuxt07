@@ -49,7 +49,7 @@
 
 	const fetchData = async () => {
 		let APIsvr = window.sessionStorage.getItem('liwaAPIsvr')
-		let url = `${APIsvr}/005_havelist.php?filterName=${filters.value.username}&filterEmail=${filters.value.usermail}&filterRole=${filters.value.role}&filterOnboard1=${filters.value.onboard1}&filterOnboard2=${filters.value.onboard2}&orderCol=${orderCol.value}&sortDir=${sortDir.value}&page=${page.value}&pageSize=${pageSize.value}`
+		let url = `${APIsvr}/005_havelist.php?siteID=${filters.value.siteID}&userID=${filters.value.userID}&mainID=${mainID.value}&filterShortItems=${filters.value.shortItems}&filterStartDate=${filters.value.startDate}&filterEndDate=${filters.value.endDate}&filterItemTypeID=${filters.value.itemTypeID}&filterStatus=${filters.value.status}&orderCol=${orderCol.value}&sortDir=${sortDir.value}&page=${page.value}&pageSize=${pageSize.value}`
 		const data = await useFetch(url, {method: 'GET'}, {refetch: true}).get().json()
 		liwaData.value = data.data.value.arrSQL
 		totalPage.value = data.data.value.totalPage
@@ -179,7 +179,7 @@
 	        body: datastr
 	      }
 	    })
-	    const { data } = await useMyFetch('005_edit3.php').post().json()
+	    const { data } = await useMyFetch('005_edit.php').post().json()
 	    if (!data.value.message) {
 	    	// window.location.href = '/005/'
 	    } else {
@@ -196,13 +196,17 @@
 
 	const refetchFilters = () => {
 		let tmpFilters = window.sessionStorage.getItem('liwafilter_005')
+		let siteID = window.sessionStorage.getItem('liwaSiteID')
+		let userID = window.sessionStorage.getItem('liwaUserID')
 		if ((tmpFilters == "") || (tmpFilters == null)) {
 			// sessionStorage內的liwafilters有值
-			filters.value.username = ''
-			filters.value.usermail = ''
-			filters.value.role = ''
-			filters.value.onboard1 = ''
-			filters.value.onboard2 = ''
+			filters.value.siteID = siteID
+			filters.value.userID = userID
+			filters.value.shortItems = ''
+			filters.value.itemTypeID = ''
+			filters.value.startDate = ''
+			filters.value.endDate = ''
+			filters.value.status = 0
 			filters.value.orderCol = orderCol.value
 			filters.value.sortDir = sortDir.value
 			filters.value.page = page.value
@@ -310,8 +314,7 @@
 													</svg>
 												</div>
 												<div v-if="isChkAllMode == 0">
-													<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-														 viewBox="0 0 455 455" style="enable-background:new 0 0 455 455;" xml:space="preserve">
+													<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 455 455" style="enable-background:new 0 0 455 455;" xml:space="preserve">
 														<g style="fill:#4338ca;stroke:#4338ca;stroke-width:12px;stroke-linecap:round;stroke-linejoin:round;">
 														<rect y="212.5" width="455" height="30"/>
 														</g>
@@ -319,34 +322,28 @@
 												</div>
 											</div>	
 			                  		</th>
-			                  		<th scope="col" class="thPanel w-3/16">
-			                    	姓名
+			                  		<th scope="col" class="thPanel w-2/5">
+			                    	公告標題
+			                  		</th>
+			                  		<th scope="col" v-if="useShowmode()>1" class="thPanel w-2/5">
+			                    	公告日期
 			                  		</th>
 			                  		<th scope="col" v-if="useShowmode()>1" class="thPanel w-2/16">
-			                    	email
-			                  		</th>
-			                  		<th scope="col" v-if="useShowmode()>1" class="thPanel w-2/16">
-			                    	註冊時間
-			                  		</th>
-			                  		<th scope="col" v-if="useShowmode()>2" class="thPanel w-2/16">
-			                    	會員資格
-			                  		</th>
-			                  		<th scope="col" v-if="useShowmode()>2" class="thPanel w-3/16">
-			                    	上次登入時間
+			                    	公告類別
 			                  		</th>
 			                	</tr>
 			              	</thead>
 							<tbody class="w-full bg-white ring-1 ring-gray-50">
 								<tr 
 									class="odd:bg-white even:bg-slate-200"
-									v-for="(user, index) in liwaData" 
+									v-for="(record, index) in liwaData" 
 									:key="index"
-									:data-id="user.mainID" 
-									@click.prevent="setMainID(user.mainID)">
-									<td scope="col" class="px-6 py-3 border-b order-gray-300 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
-										<div class="w-full h-full flex flex-row justify-evenly pl-4 pt-2">
-											<div class="w-8 h-8 border-4 border-slate-500" @click.stop.prevent="setChkList(user.mainID)">
-												<div v-if="user.isChecked==1">
+									:data-id="record.mainID" 
+									@click.prevent="setMainID(record.mainID)">
+									<td scope="col" class="px-3 py-3 border-b order-gray-300 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+										<div class="w-full h-full flex flex-row justify-evenly pt-2">
+											<div class="w-8 h-8 border-4 border-slate-500 mr-4" @click.stop.prevent="setChkList(record.mainID)">
+												<div v-if="record.isChecked==1">
 													<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="30px" viewBox="-20 50 405.272 405.272" style="enable-background:new -20 50 405.272 405.272;"
 														 xml:space="preserve">
 														<g style="fill:#4338ca;stroke:#4338ca;stroke-width:12px;stroke-linecap:round;stroke-linejoin:round;">
@@ -357,8 +354,8 @@
 													</svg>
 												</div>
 											</div>
-											<div class="w-8 h-8" @click="setBM(user.mainID)">
-												<div v-if="user.bookmark=='0'">
+											<div class="w-8 h-8" @click="setBM(record.mainID)">
+												<div v-if="record.bookmark=='0'">
 													<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 73.317 73.317" style="enable-background:new 0 0 73.317 73.317;" xml:space="preserve">
 														<g style="fill:#FFF;stroke:#666;stroke-width:5px;stroke-linecap:round;stroke-linejoin:round;">
 															<polygon points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798 10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "/>
@@ -375,16 +372,12 @@
 											</div>
 										</div>	
 									</td>
-							        <td scope="col" class="tdPanel w-3/16">{{ user.username }}
+							        <td scope="col" class="tdPanel w-2/5">{{ record.shortItems }}
 							        </td>
-							        <td v-if="useShowmode()>1" class="tdPanel w-2/16">{{ user.usermail }}
+							        <td v-if="useShowmode()>1" class="tdPanel w-2/5">{{ record.pDate }}
 							        </td>
-						            <td v-if="useShowmode()>1" class="tdPanel w-2/16">{{ user.onboard }}
+						            <td v-if="useShowmode()>1" class="tdPanel w-1/5">{{ record.itemType }}
 						            </td>
-						            <td v-if="useShowmode()>2" class="tdPanel w-2/16">{{ user.roles }}
-						            </td>
-						            <td v-if="useShowmode()>2" class="tdPanel w-3/16">{{ user.loginTime }}
-						            </td>  
 								</tr>
 							</tbody>
 			            </table>
@@ -433,37 +426,37 @@
         		>
 			        <FormKit
 			          form-class="w-full "
-			          name="username"
-			          label="姓名"
+			          name="shortItems"
+			          label="標題"
 			          type="text"
-			          placeholder="輸入公告姓名"
+			          placeholder="輸入公告標題"
 			          help="可輸入部份文字"
-			        />
-			        <FormKit
-			          name="usermail"
-			          label="Email"
-			          type="text"
-			          help="可輸入部份Email 文字"
-			        />
-			        <FormKit
-			          name="role"
-			          label="會員類別"
-			          type="select"
-			          :options="rolesOption"
-			          help="請選擇會員類別"
 			        />
 			        <div class="w-[95%] flex flex-col lg:flex-row justify-between">
 				        <FormKit
-				          name="onboard1"
-				          label="註冊日期(上限)"
+				          name="startDate"
+				          label="起始日"
 				          type="date"
 				        />
 				        <FormKit
-				          name="onboard2"
-				          label="註冊日期(下限)"
+				          name="endDate"
+				          label="結束日"
 				          type="date"
 				        />				        	
 			        </div>
+			        <FormKit
+			          name="itemTypeID"
+			          label="公告類別"
+			          type="liwaDrop"
+			          help="請選擇公告類別"
+			        />
+			        <FormKit
+			          name="status"
+			          label="上架狀態"
+			          type="liwaDrop"
+			          :options="rolesOption"
+			          help="請選擇上架狀態"
+			        />
         		</FormKit>
         	</div>
         </div>

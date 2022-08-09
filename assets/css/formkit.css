@@ -1,5 +1,16 @@
+  .formkit-wrapper[data-type="checkbox"], .formkit-wrapper[data-type="radio"] {
+    display:flex;
+    align-items: center;
+  }
+
   .formkit-outer {
     margin-bottom: 0.25rem;
+  }
+
+  .formkit-outer[data-type="checkbox"] > .formkit-fieldset {
+    max-width: 28rem;
+    padding:0 0.5rem 0 0.25rem;
+    border:none;
   }
 
   label.formkit-label {
@@ -33,7 +44,7 @@
   }
 
   .formkit-option {
-    line-height: 2.3rem;
+    line-height: 2rem;
   }
 
   .formkit-option .formkit-inner {
@@ -189,6 +200,10 @@
 
   .formkit-input[type="password"]::placeholder {
     color: #9ca3af;
+  }
+
+  .formkit-fieldset, .formkit-wrapper {
+    max-width:var(--fk-max-width-input);
   }
 
   fieldset.formkit-fieldset {

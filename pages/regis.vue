@@ -17,7 +17,7 @@
     let datastr = JSON.stringify(liwaData.value)
 
     const useMyFetch = createFetch({
-      baseUrl: 'http://localhost:8102',
+      baseUrl: 'http://172.18.2.5',
       options: {},
       fetchOptions: {
         mode: 'cors',

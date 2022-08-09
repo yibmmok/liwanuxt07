@@ -14,8 +14,6 @@
 	const proglink = ref('/002')
 	const detailFlg = ref(true)
 	const detailName = ref('')
-	const uGroups = ref([])
-	const tmpData = ref({})
 	const liwaData = ref({})
 	const liwaDetail1 = ref([])
 	const stitle = ref('')

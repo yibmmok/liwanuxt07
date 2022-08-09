@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import TinyMceEditor from "@tinymce/tinymce-vue"
 
 	const sContent = ref('')
@@ -34,14 +34,25 @@ import TinyMceEditor from "@tinymce/tinymce-vue"
 		},
 	})
 
+	const test1 = () => {
+		
+		tinymce.activeEditor.setContent('<p>456456</p>')
+		console.log('liwaEditor =', tinymce.activeEditor.getContent({ format: 'html'}))		
+	}
+
 	const handleOnChange = () => {
 		console.log("The input has changed!")
 	}
+
+	onMounted(() => {
+		let AA = "<p>123123</p>"
+		// tinymce.activeEditor.setContent('<p>123123</p>')
+	})
 </script>
 
 <template>
 <h1 class="text-red-500 text-3xl p-4">Index Page</h1>
-<button class="w-48 h-12 bg-yellow-200">測試</button>
+<button class="w-48 h-12 bg-yellow-200" @click="test1">測試</button>
 <div>
 	<TinyMceEditor api-key="fkoaqldrjeuygn6wbe51uchydhzrhufgs8a9tt6yehn106uo" 
 	:init="InitVal"
