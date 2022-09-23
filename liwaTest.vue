@@ -4,10 +4,13 @@
 	主功能: 
 
 	**********************************************************/
-	import { ref, onMounted } from "vue"
+	import { ref, onMounted, defineAsyncComponent } from "vue"
+	import "vue-neat-modal/dist/vue-neat-modal.css"
+	import { Modal } from "vue-neat-modal"
+	import DialogLoading from "../components/DialogLoading.vue"
+/*
 	// import { createInput } from "@formkit/vue"
 	// import liwaCombo from "../components/liwaCombo"
-
 	const values = ref({})
 	// const Combobox = createInput(liwaCombo, {
 	// 	props: ['sVal', 'arrOption'],
@@ -16,7 +19,6 @@
 	// const showValue = ref('')
 	// const keyID = ref('')
 	const region = ref('Asia')
-
 	const liwaData = ref([
 		{'value': 'abc', 'label': 'Asia'},
 		{'value': 'def', 'label': 'Africa'},
@@ -24,51 +26,18 @@
 		{'value': 'jkl', 'label': 'Austria'},
 		{'value': 'mno', 'label': 'Europe'}		
 	])
-	// const comboData = ref([
-	// 	{'value': 'abc', 'label': 'Asia'},
-	// 	{'value': 'def', 'label': 'Africa'},
-	// 	{'value': 'ghi', 'label': 'Aserica'},
-	// 	{'value': 'jkl', 'label': 'Austria'},
-	// 	{'value': 'mno', 'label': 'Europe'}
-	// ])
-
-
 	const getResult1 = () => {
 
-	}
+	}	
+*/
 
-	// const filterData = () => {
-	// 	isShow.value = true
-	// 	let iLen = showValue.value.length
-	// 	if (iLen > 0) {
-	// 		console.log('item value =', liwaData.value[0].val.substr(0, iLen))
-	// 		comboData.value = liwaData.value.filter(liwaItem => 
-	// 			liwaItem.val.substr(0, iLen) == showValue.value
-	// 		)
-	// 		console.log('comboData =', comboData.value)
-	// 	} else {
-	// 		comboData.value = liwaData.value
-	// 	}
-	// }
+	// const ContactForm = defineAsyncComponent({
+	// 	loader: () => import("../components/liwaConfigList.vue"),
+	// 	loadingComponent: DialogLoading,
+	// })
 
-	// const clearInput = () => {
-	// 	showValue.value = ''
-	// 	filterData()
-	// }
-
-	// const toggleMenu = () => {
-	// 	isShow.value = !isShow.value
-	// 	if (isShow.value == true) {
-	// 		filterData()
-	// 	}
-	// }	
-
-	// const getItems = (sValue, sID) => {
-	// 	showValue.value = sValue
-	// 	// props.context.node.input(sID)
-	// 	keyID.value = sID
-	// 	isShow.value = false
-	// }	
+	// const isLazyActivated = ref(false)
+	const isOpen = ref(false)
 
 	onMounted(() => {	
 
@@ -83,14 +52,34 @@
 	<div>
 		<h1>測試網頁</h1>
 	</div>
-	<div>
+	<button @click="isOpen = true">Open</button>
+	<Modal
+		v-model="isOpen"
+		click-out="true"
+		max-width="500px"
+	>
+	    <div class="card">
+	    	<!-- 自訂元件可放在內部 -->
+	      <h1>Hey nice to see ya ;)</h1>
+
+	      <p>
+	        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nesciunt non
+	        dicta architecto suscipit exercitationem amet iste quae cumque
+	        accusantium? Praesentium qui dolor harum quod delectus dolorum, illo
+	        ipsum in magnam.
+	      </p>
+
+	      <button @click="isOpen = false">Close</button>
+	    </div>		
+	</Modal>	
+<!-- 	<div>
 		<div 
 			class="w-12 h-8 bg-slate-500 text-white text-center pt-1 ml-4 mt-2 cursor-pointer"
 			@click="getResult1()"
 			>測試</div>
 		<div class="w-12 h-8 bg-purple-200 invisible" @click="" ref="btnTest2">btnTest2</div>	
-	</div>
-	<FormKit type="form" v-model="values">
+	</div> -->
+<!-- 	<FormKit type="form" v-model="values">
 		<div class="w-96 relative">
 			<FormKit
 			  type="liwaCombo"
@@ -104,7 +93,7 @@
 
 	</FormKit>	
 	 <pre wrap>{{ values }}</pre>
-<!-- 	<div class="w-72 h-16 bg-emerald-100 p-4 relative">
+	<div class="w-72 h-16 bg-emerald-100 p-4 relative">
 		<input 
 			ref="inputVal"
 			class="w-full h-8 outline-2 text-md"
